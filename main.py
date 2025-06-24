@@ -70,21 +70,21 @@ def generate_content(client, messages, verbose):
         function_responses = [] 
         for f in response.function_calls:
             result = call_function(f, verbose)
-            if not result.parts or not result.parts[0].function_response:
-                    raise Exception("Error: empty function call result")
+            if (
+                 not result.parts
+                 or not result.parts[0].function_response
+            ):
+                 raise Exception("Error: empty function call result")
             if verbose:
                 print(f"-> {result.parts[0].function_response.response}")
             function_responses.append(result.parts[0])
+
         if not function_responses:
             raise Exception("no function responses generated, exiting.")
         
         messages.append(types.Content(role="tool", parts=function_responses))
     
-        # return response
-        
-        
-
-
+    
 if __name__ == "__main__":
     main()
 
